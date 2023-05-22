@@ -32,26 +32,10 @@ function renderGallery(items) {
 
 renderGallery(galleryItems);
 
-galleryContainer.addEventListener('click', handleImageClick);
+// Ініціалізація бібліотеки SimpleLightbox з додаванням підписів та затримкою
+const gallery = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
-let instance = null;
 
-function handleImageClick(event) {
-  event.preventDefault();
-  if (event.target.classList.contains('gallery__image')) {
-    const originalImageURL = event.target.dataset.source;
-    const description = event.target.getAttribute('alt');
-    
-    instance = basicLightbox.create(`<img src="${originalImageURL}" alt="${description}" />`);
-    
-    instance.show();
-    document.addEventListener('keydown', handleKeyDown);
-  }
-}
-
-function handleKeyDown(event) {
-  if (event.key === 'Escape' && instance) {
-    instance.close();
-    document.removeEventListener('keydown', handleKeyDown);
-  }
-}
