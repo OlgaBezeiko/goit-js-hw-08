@@ -21,4 +21,4 @@ window.addEventListener('DOMContentLoaded', () => {
     const currentTime = vimeoPlayer.currentTime();
     localStorage.setItem(storageKey, currentTime.toFixed(2));
   }, 1000));
-});
+})
