@@ -10,17 +10,22 @@ let vimeoPlayer;
 window.addEventListener('DOMContentLoaded', () => {
   vimeoPlayer = new Player(playerIframe);
 
-  // Відтворення відео збереженого часу після завантаження
+  // Отримання збереженого часу відтворення з локального сховища
   const storedTime = localStorage.getItem(storageKey);
-  if (storedTime) {
-    vimeoPlayer.setCurrentTime(parseFloat(storedTime));
+  
+  // Перевірка наявності збереженого часу та встановлення його в плеєр
+  if (storedTime !== null) {
+    vimeoPlayer.setCurrentTime(parseFloat(storedTime)).catch(error => {
+      console.error('Failed to set currentTime:', error);
+    });
   }
 
   // Відстеження події оновлення часу відтворення
-vimeoPlayer.on('timeupdate', throttle(() => {
-    if (vimeoPlayer && typeof vimeoPlayer.currentTime !== 'undefined') {
-      const currentTime = vimeoPlayer.currentTime;
+  vimeoPlayer.on('timeupdate', throttle(() => {
+    vimeoPlayer.getCurrentTime().then(currentTime => {
       localStorage.setItem(storageKey, currentTime.toFixed(2));
-    }
+    }).catch(error => {
+      console.error('Failed to get currentTime:', error);
+    });
   }, 1000));
-})
+});
