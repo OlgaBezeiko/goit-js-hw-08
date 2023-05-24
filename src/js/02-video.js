@@ -17,8 +17,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Відстеження події оновлення часу відтворення
-  vimeoPlayer.on('timeupdate', throttle(() => {
-    const currentTime = vimeoPlayer.currentTime();
-    localStorage.setItem(storageKey, currentTime.toFixed(2));
+vimeoPlayer.on('timeupdate', throttle(() => {
+    if (vimeoPlayer && typeof vimeoPlayer.currentTime !== 'undefined') {
+      const currentTime = vimeoPlayer.currentTime;
+      localStorage.setItem(storageKey, currentTime.toFixed(2));
+    }
   }, 1000));
 })
